@@ -184,9 +184,9 @@ dataset_name = dataset_path[:-4]
 print(dataset_name)
 print(f"Analyzing {dataset_path}...\n")
 
-api_key = os.getenv("AIPROXY_TOKEN")
+api_key = os.getenv("OPENAI_TOKEN")
 CONFIG = {
-    "AI_PROXY_URL": "https://aiproxy.sanand.workers.dev/openai/v1/chat/completions", 
+    "AI_PROXY_URL": "https://api.openai.com/v1/chat/completions", 
     "AIPROXY_TOKEN": api_key,
     "OUTPUT_DIR": os.path.dirname(os.path.abspath(__file__))
 }

@@ -29,6 +29,9 @@ import warnings
 warnings.filterwarnings("ignore")
 
 def plot_missing(data , name):
+    # Create media folder if it doesn't exist
+    if not os.path.exists(name):
+        os.makedirs(name)
 
     # Calculate missing values
     missing_values = data.isnull().sum()
@@ -101,7 +104,7 @@ def send_metadata_to_openai(metadata, config):
         "messages": [
                         {"role": "user", "content": prompt},
                         {"role": "system", "content": "You are to generate a python code for the given task. Only output the code and nothing else. The code is run in an interperter so do not add the \"python\" command in the front. Again NEVER add \"python\" command while outputing."},
-                        {"role": "user", "content": f"Generate python code to generate a 1) bar chart for showing the number of missing values, do not plot if there are no missing values in the entire dataset , 2) select numerical columns, MinMax scale them and plot correlation matrix for them 3) Make boxplots for the scaled numerical columns to show outliers. a pandas dataframe is named data and use the seaborn library. save both in png format. The dataframe is already loaded as 'data' so just provide the remaining code."}
+                        {"role": "user", "content": f"Generate python code to generate a 1) bar chart for showing the number of missing values, do not plot if there are no missing values in the entire dataset , 2) select numerical columns, MinMax scale them and plot correlation matrix for them 3) Make boxplots for the scaled numerical columns to show outliers. a pandas dataframe is named data and use the seaborn library. save both in the {dataset_name} folder in png format. Make the folder if it does not exist. The dataframe is already loaded as 'data' so just provide the remaining code."}
                     ],
         "temperature": 0.7
     }
@@ -161,7 +164,7 @@ def write_readme(df, metadata, dataset_name, config):
             result = response.json()
             description = result["choices"][0]["message"]["content"]
             # Write the description to a README file
-            with open("README.md", "w") as f:
+            with open(os.path.join(dataset_name, "README.md"), "w") as f:
                 f.write(description)
             print("README generated successfully.")
         else:

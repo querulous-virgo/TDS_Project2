@@ -241,6 +241,10 @@ data , metadata = extractCsvMetadata(dataset_path)
 result = send_metadata_to_openai(metadata , CONFIG)
 result.replace('`' , '')
 result.replace('python' , '')
+
+if result.startswith("```"):
+    result = result.split('\n', 1)[-1].rsplit('\n', 1)[0]
+
 exec(result)
 
 write_readme(data, metadata, dataset_name, CONFIG)

@@ -124,7 +124,7 @@ def extractCsvMetadata(file_path):
     
     # Convert columns to appropriate data types
     data = data.convert_dtypes()
-    
+
     # Extract metadata
     metadata = {
         "Column Names": data.columns.tolist(),
@@ -239,7 +239,8 @@ CONFIG = {
 
 data , metadata = extractCsvMetadata(dataset_path)
 result = send_metadata_to_openai(metadata , CONFIG)
-
+result.replace('`' , '')
+result.replace('python' , '')
 try:
     exec(result)
 except Exception as e:

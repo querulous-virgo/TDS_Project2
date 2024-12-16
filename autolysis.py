@@ -241,10 +241,6 @@ data , metadata = extractCsvMetadata(dataset_path)
 result = send_metadata_to_openai(metadata , CONFIG)
 result.replace('`' , '')
 result.replace('python' , '')
-try:
-    exec(result)
-except Exception as e:
-    print(f"Error executing generated code: {e}")
-    sys.exit(1)
+exec(result)
 
 write_readme(data, metadata, dataset_name, CONFIG)

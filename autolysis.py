@@ -43,7 +43,7 @@ packages_with_aliases = {
     "tabulate": "tabulate",
     "chardet" : None,
     "requests" : None,
-    "sklearn" : None
+    "scikit-learn" : None
 }
 
 # Ensure pip is installed

@@ -1,70 +1,17 @@
-import subprocess
-import sys
-import importlib
-import os
-from dateutil.parser import parse
-
-# Ensure pip is installed and updated
-def ensure_pip():
-    try:
-        import pip
-        print("'pip' is already available.")
-    except ImportError:
-        print("'pip' not found. Installing pip...")
-        try:
-            subprocess.check_call([sys.executable, "-m", "ensurepip", "--upgrade"])
-            subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"])
-            print("'pip' has been installed successfully.")
-        except subprocess.CalledProcessError as e:
-            print(f"Failed to install pip: {e}")
-            sys.exit(1)
-
-# Function to check and install a package
-def install_and_import(package_name):
-    try:
-        importlib.import_module(package_name)
-        print(f"'{package_name}' is already installed.")
-    except ImportError:
-        print(f"'{package_name}' not found. Installing...")
-        try:
-            subprocess.check_call([sys.executable, "-m", "pip", "install", package_name])
-            print(f"'{package_name}' has been installed successfully.")
-        except subprocess.CalledProcessError as e:
-            print(f"Failed to install '{package_name}': {e}")
-            sys.exit(1)
-
-# List of required packages with aliases
-packages_with_aliases = {
-    "pandas": "pd",
-    "matplotlib.pyplot": "plt",
-    "seaborn": "sns",
-    "openai": None,
-    "numpy": "np",
-    "tabulate": "tabulate",
-    "chardet" : None,
-    "requests" : None
-}
-
-# Ensure pip is installed
-ensure_pip()
-
-# Check and install each package
-for package in packages_with_aliases.keys():
-    install_and_import(package.split('.')[0])  # Handle submodules
-
-# Import the packages with aliases
-for package, alias in packages_with_aliases.items():
-    try:
-        module = importlib.import_module(package)
-        if alias:
-            globals()[alias] = module
-        else:
-            globals()[package] = module
-    except ModuleNotFoundError as e:
-        print(f"Error importing '{package}': {e}")
-        sys.exit(1)
-
-# Example usage to confirm everything is working
+# /// script
+# requires-python = ">=3.11"
+# dependencies = [
+#   "numpy",
+#   "pandas",
+#   "requests",
+#   "python-dotenv",
+#   "seaborn",
+#   "matplotlib",
+#   "scipy",
+#   "statsmodels",
+#   "chardet"
+# ]
+# ///
 print("All packages have been successfully installed and imported!")
 import numpy as np
 import pandas as pd
@@ -241,10 +188,10 @@ data , metadata = extractCsvMetadata(dataset_path)
 result = send_metadata_to_openai(metadata , CONFIG)
 result.replace('`' , '')
 result.replace('python' , '')
-
-if result.startswith("```"):
-    result = result.split('\n', 1)[-1].rsplit('\n', 1)[0]
-
-exec(result)
+try:
+    exec(result)
+except Exception as e:
+    print(f"Error executing generated code: {e}")
+    sys.exit(1)
 
 write_readme(data, metadata, dataset_name, CONFIG)

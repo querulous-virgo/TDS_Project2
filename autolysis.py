@@ -41,7 +41,8 @@ packages_with_aliases = {
     "openai": None,
     "numpy": "np",
     "tabulate": "tabulate",
-    "chardet" : None
+    "chardet" : None,
+    "requests" : None
 }
 
 # Ensure pip is installed

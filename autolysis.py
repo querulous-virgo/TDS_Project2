@@ -42,7 +42,8 @@ packages_with_aliases = {
     "numpy": "np",
     "tabulate": "tabulate",
     "chardet" : None,
-    "requests" : None
+    "requests" : None,
+    "sklearn" : None
 }
 
 # Ensure pip is installed

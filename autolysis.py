@@ -124,8 +124,7 @@ def extractCsvMetadata(file_path):
     
     # Convert columns to appropriate data types
     data = data.convert_dtypes()
-    plot_missing(data)
-    plot_correlation(data)
+    
     # Extract metadata
     metadata = {
         "Column Names": data.columns.tolist(),
@@ -239,12 +238,12 @@ CONFIG = {
 }
 
 data , metadata = extractCsvMetadata(dataset_path)
-# result = send_metadata_to_openai(metadata , CONFIG)
+result = send_metadata_to_openai(metadata , CONFIG)
 
-# try:
-#     exec(result)
-# except Exception as e:
-#     print(f"Error executing generated code: {e}")
-#     sys.exit(1)
+try:
+    exec(result)
+except Exception as e:
+    print(f"Error executing generated code: {e}")
+    sys.exit(1)
 
 write_readme(data, metadata, dataset_name, CONFIG)
